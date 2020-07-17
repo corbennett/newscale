@@ -6,6 +6,7 @@ Created on Wed Jul  8 15:53:24 2020
 """
 import pandas as pd
 import numpy as np
+import logging
 
 #This is the function that tries to find the insertion start and end times from the logged motor movements
 def findInsertionStartStop(df, ztolerance=50):
@@ -22,7 +23,7 @@ def findInsertionStartStop(df, ztolerance=50):
     #find the first time such that there are small steps in Z and no movement in X and Y AND the time steps are small
     try:    
         insertion = rolling.where((rolling['z']<10)&
-                                              (rolling['z']>2)&
+                                              (rolling['z']>0)&
                                               (rolling['x']<1)&
                                               (rolling['y']<1)&
                                               (rolling_time_delta<2)).dropna()
@@ -38,6 +39,6 @@ def findInsertionStartStop(df, ztolerance=50):
         print(end-start)
         
     except Exception as e:
-        print(e)
+        logging.exception(e)
         start, end = deltas.index[0], deltas.index[0]
     return start, end
