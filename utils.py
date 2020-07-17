@@ -31,6 +31,9 @@ def findInsertionStartStop(df, ztolerance=50):
         start = insertion.index[0]    
         insertion_deltas = deltas[start:].dropna()
         first_big_z = insertion_deltas.where(insertion_deltas['z']>ztolerance).dropna()
+        # first_big_time = timeDeltas[start:].where(timeDeltas[start:]>300).dropna()
+        # if len(first_big_time)>0:
+        #     end = first_big_time.index[0]
         if len(first_big_z)>0:
             end = deltas[start:first_big_z.index[0]].index[-2]
         else:
